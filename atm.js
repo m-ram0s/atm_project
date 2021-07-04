@@ -1,70 +1,75 @@
+const index = require('./index');
 const account = require('./account');
 const wallet = require('./wallet');
+const prompt = require('prompt-sync')();
 
-function getBalance (){
-    console.log('\nYour current balance is: ' + '$' + account.balance + '\n');
-    atmMenu();
+function validatePin(){
+    //console.log('PIN VAL');
+     let pinNumber = prompt('Welcome. Please enter your PIN to begin: ');
+     if (pinNumber === pin){
+         console.log('\n*** PIN Validated ***\n');
+         atmMain();
+     }
+     else if (pinNumber !== pin){
+         console.log('\n!!! Incorrrect PIN. Please try again. !!!');
+             validatePin();
+     }
+}
+
+function getBalance(){
+    console.log('\n$$ Your current BANK balance is: ' + '$' + account.balance.toFixed(2));
+    console.log('$$ Your current DIGITAL WALLET balance is: ' + '$' + wallet.walletCash.toFixed(2));
+    let totalBalance = account.balance += wallet.walletCash;
+    console.log('$$ Your current COMBINED balance is: ' + '$' + totalBalance.toFixed(2) + '\n');
+    atmMain();
 }
 
 function withdraw(){
-    const prompt = require('prompt-sync')();
-    let withdrawAmount = parseInt(prompt('Enter the amount to withdraw: '));
-    let newWithdrawBalance = account.balance -= withdrawAmount;;
-
-        console.log('\nYour new balance is: ' + '$' + newWithdrawBalance + '\n');
-        atmMenu();
+    console.log('\n')
+    let withdrawAmount = parseInt(prompt('$$ Enter the amount of to withdraw: '));
+    let newWithdrawBalance = account.balance -= withdrawAmount;
+    console.log('\nYour new BANK balance is: ' + '$' + newWithdrawBalance.toFixed(2) + '\n');
+    atmMain();
 }
 
 function deposit(){
-    const prompt = require('prompt-sync')();
-    let depositAmount = parseInt(prompt('Enter the amount to desposit: '));
-    let newDepBalance = account.balance += depositAmount;;
-
-        console.log('\nYour new balance is: ' + '$' + newDepBalance + '\n');
-        atmMenu();
+    console.log('\n')
+    let depositAmount = parseInt(prompt('$$ Enter the amount to desposit: '));
+    let newDepBalance = account.balance += depositAmount;
+    console.log('\nYour new BANK balance is: ' + '$' + newDepBalance.toFixed(2) + '\n');
+    atmMain();
 }
 
-function validatePin(){
-    const prompt = require('prompt-sync')();
-    //console.log('PIN VAL');
-     let pinNumber = prompt('Enter your PIN to begin: ');
-     if (pinNumber === '1010'){
-         console.log('\n*** PIN Validated ***\n');
-         atmMenu();
-     }
-     else if (pinNumber !== '1010'){
-         console.log('\nIncorrrect PIN. Please try again.');
-             validatePin();
-     }
- return pinNumber 
+function exit(){
+   // console.log('\n');
+   validatePin();
 }
+function atmMain(){
+    console.log('<<< Select an option and HIT ENTER: >>>\n\n* Show Current Balance = 1\n\n* Withdraw = 2\n\n* Deposit = 3\n\n* Exit = 4\n')
+    let atmChoice = parseInt(prompt('Enter a number: '));
 
-function atmMenu(){
-    const prompt = require('prompt-sync')();
-    let atmChoice = parseInt(prompt('Select an option and hit Enter:\n\nBalance = 1\n\nWithdraw = 2\n\nDeposit = 3\n\nExit = 4\n'));
-
-    if (atmChoice === 1) {
+    if (atmChoice === 1) { 
             getBalance();
     }
-        else if (atmChoice === 3){
-            deposit();
-        }
         else if (atmChoice === 2){
             withdraw();
+        }
+        else if (atmChoice === 3){
+            deposit();
         }
         else if (atmChoice === 4){
             exit();
         }
+        else {
+            console.log('!!! Invalid input - Please try again !!!');
+            atmMain();
+        }
 }
-
-function exit(){
-    validatePin();
-}
-
-module.exports = {
-    validatePin:validatePin,
-    atmMenu:atmMenu,
-    getBalance:getBalance.balance,
-    withdraw:withdraw,
-    deposit:deposit
-}
+    module.exports = {
+        getBalance:getBalance,
+        withdraw:withdraw,
+        deposit:deposit,
+        validatePin:validatePin,
+        atmMain:atmMain,
+        exit:exit
+    }

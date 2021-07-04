@@ -1,8 +1,6 @@
 
-function wallet(){
-    let walletCash = 500;
-}
+walletCash = 500.00;
 
 module.exports = {
-    walletCash:walletCash
+    walletCash:walletCash,
 }
