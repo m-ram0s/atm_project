@@ -25,19 +25,35 @@ function getBalance(){
 }
 
 function withdraw(){
-    console.log('\n')
-    let withdrawAmount = parseInt(prompt('$$ Enter the amount of to withdraw: '));
-    let newWithdrawBalance = account.balance -= withdrawAmount;
-    console.log('\nYour new BANK balance is: ' + '$' + newWithdrawBalance.toFixed(2) + '\n');
-    atmMain();
+    console.log('\n');
+    let withdrawAmount = parseInt(prompt('$$ Enter the amount of to withdraw or enter 0 to cancel: '));
+    if (withdrawAmount >= account.balance) {
+        console.log('!!! Insufficient funds to withdraw !!!. Please try again.');
+        withdraw();
+    }
+        else {
+            let newWithdrawBalance = account.balance -= withdrawAmount;
+            let newWalletWithBalance = wallet.walletCash += withdrawAmount;
+            console.log('\nYour new BANK balance is: ' + '$' + newWithdrawBalance.toFixed(2));
+            console.log('Your new DIGITAL WALLET balance is: ' + '$' + newWalletWithBalance.toFixed(2) + '\n');
+            atmMain();
+    }
 }
 
 function deposit(){
-    console.log('\n')
-    let depositAmount = parseInt(prompt('$$ Enter the amount to desposit: '));
-    let newDepBalance = account.balance += depositAmount;
-    console.log('\nYour new BANK balance is: ' + '$' + newDepBalance.toFixed(2) + '\n');
-    atmMain();
+    console.log('\n');
+    let depositAmount = parseInt(prompt('$$ Enter the amount to desposit or enter 0 to cancel: '));
+    if (depositAmount >= wallet.walletCash) {
+        console.log('!!! Insufficient funds to deposit !!!. Please try again.');
+        deposit();
+    }
+        else {
+            let newDepBalance = account.balance += depositAmount;
+            let newWalletDepBalance = wallet.walletCash -= depositAmount;
+            console.log('\nYour new BANK balance is: ' + '$' + newDepBalance.toFixed(2));
+            console.log('Your new DIGITAL WALLET balance is: ' + '$' + newWalletDepBalance.toFixed(2) + '\n');
+            atmMain();
+    }
 }
 
 function exit(){
@@ -58,6 +74,7 @@ function atmMain(){
             deposit();
         }
         else if (atmChoice === 4){
+            console.log('\n');
             exit();
         }
         else {
